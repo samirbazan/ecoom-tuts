@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+
 
 
 class CategoriesController extends Controller {
@@ -16,7 +18,7 @@ class CategoriesController extends Controller {
     public function __construct(){
         parent::__construct();
         $this->beforeFilter('csrf', array('on' => 'post'));
-        $this->beforeFilter('admin');
+
     }
 	/**
 	 * Display a listing of the resource.
@@ -25,8 +27,12 @@ class CategoriesController extends Controller {
 	 */
 	public function getIndex()
 	{
-        return view('categories.index')
-            ->with('categories', Category::all());
+        if(Auth::user()->admin == 1) {
+            return view('categories.index')
+                ->with('categories', Category::all());
+        }
+
+        return redirect('/')->with('message', 'You dont have access to that page');
 	}
 
 	/**
@@ -73,5 +79,7 @@ class CategoriesController extends Controller {
         return redirect('admin/categories/index')
             ->with('message', 'Something went Wrong, please try again');
 	}
+
+
 
 }

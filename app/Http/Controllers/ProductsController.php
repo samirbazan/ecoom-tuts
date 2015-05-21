@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +19,6 @@ class ProductsController extends Controller {
     public function __construct(){
         parent::__construct();
         $this->beforeFilter('csrf', array('on' => 'post'));
-        $this->beforeFilter('admin');
     }
     /**
      * Display a listing of the resource.
@@ -32,10 +32,12 @@ class ProductsController extends Controller {
         foreach (Category::all() as $category) {
             $categories[$category->id] = $category->name;
         }
-
-        return view('products.index')
-            ->with('products', Product::all())
-            ->with('categories', $categories);
+            if(Auth::user()->admin == 1) {
+                return view('products.index')->
+                with('products', Product::all())
+                    ->with('categories', $categories);
+            }
+        return redirect('/')->with('message', 'You dont have access to that page');
     }
 
     /**
