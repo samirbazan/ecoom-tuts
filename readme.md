@@ -1,3 +1,7 @@
+This is a Proyect used for the curse of Ecommerce of tuts+ but updated with Laravel 5, please feel free to mod and use just ping me :D....
+
+Check gulpfile.js and composer.json, after that you need to review Database and Seeding for start the aplication.
+
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
